@@ -2,49 +2,55 @@
 #define NEURON_H
 
 #include <iostream>
+#include <vector>
+
 
 using namespace std;
 
-typedef  vector Time_Spike; //tableau dans lequel il serait top d'avoir les temps correspondants aux spikes
+//  vector <double>  Spikes; //tableau dans lequel il serait top d'avoir les temps correspondants aux spikes //mieux de mettre dans la classe ??
 
 class Neuron {
 	
 	private: 
-		//variables constantes :
-		double Vo; //potentiel inital 
-		double R; //résistance de la membrane
-		double h;//(temps/step) temporal évolution
-		double t_start (0);
-		double t_stop;
-		double N (1); //nbr total of neurons (pour l'instant 1)
-		double Ne = 0.8*N; //nbr excitated neurons 
-		double Ni = 0.2 *N; //nbr inhibitated neurons
-		double Ce = Cext; //nbr connection excitated
-		double Ci = 0.25 * Ce; // nbr connection inhibitated
-		double Cext;// nbr coonexion externals
-		double VEext, //external frequencies exci
-		double VIext; //external frequencies inhi
-		double tE_cst; //
-		double tI_cst; 
-		//Variables non cst:
-		double V; //potentiel => méthode
-		double Iext;
-		double t;
-		double n; //nbr step
 		
 		
+		double memb_pot_; //the membrane potential (stockage) will aways be reaffected and modify with stat of neuron through methode and formule Vi(t)
+		int localClock_;//I don't use it...........  
+		bool isCharged_; //spikes = true // I don't use it 
+		//va devoir stocker son nombre de step de simulation (=local clock)   
+		//Network myNetwork; pas de network pour l'instant  
+		bool isRefractory_; // = true if the neuron is refractory 
+		
+		vector <double> spikes_;
+		//I will have to find a way to store these two value in a thabs of paper with offstream.... /
+		/**
+		 * idea: maybe add a state of neuron ==> bool exited or 
+		 * */
+		vector <Neuron*> TargetNeighbours; //tableau de ses voisins  
+		//RingBuffer: 
+		//array <int, 15> buffer_;
 		
 	public:
-		
-		Neuron(double memb_pot_, double Spikes_numb_, double t_, double T_, double Iext_);
+		//constructor & destructor 
+		Neuron(); // pas sure des attributs de la classe
 		~Neuron() {}; 
-		//type??? + attributs ???
-		void update_state(double t, double T);
-		//create methode V(t) qui est le membrane pot????
-		void set_Iext(); // donne possibilité à l'user de chosir son Iext
+	
 		
+		//methods which will care about potential membrane way ==> guide the neuron state
+		void update_neuron(double RealTime, double dt, double Iext); 
+		void pot_calcul(double dt, double Iext); 
+		
+		
+		
+		//getters 
+		size_t getNumbSpikes() const; //the size of the vector is the #of Spikes because each time one happends it is store
+		double getTimeForSpike(size_t data) const; 
+		double getMemb_pot() const;  
+		vector <double> getSpikes() const; 
+		//spikeSafe
+		  
 
 };
 	
 	
-#endif
+#endif 
