@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 2.6)
+project(Neuron)
+set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -pedantic -std=c++11")
+add_executable(run main_Neuron.cpp Neuron.cpp)
+add_executable(runTest1 main_Test1.cpp Neuron.cpp)
+#add_executable(runTest main_Test.cpp Neuron.cpp)
+add_executable(runTest2 main_Test2.cpp Neuron.cpp)
