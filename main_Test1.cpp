@@ -19,25 +19,12 @@ int main ()
 	double t_stop=100; 
 	double Iext=0.0; 
 	double a=0.0; 
-	double b=0.0; 
+	double b=79.0; 
 	double It; 
 	
 	double RealTime(0.0);
 	
-	// do while demander a l'user d'entrer Iext, a et b 
-	do{
-		cout<<"enter a value for Iext"<<endl; 
-		cin>>Iext; 
-			
-	} while (Iext == 0); 		
-	do {
-		cout<<"enter a value for the time a"<<endl; 
-		cin>>a;
-	} while (a <= t_start); 
-	do {
-		cout<<"enter a value for the time b"<<endl; 
-		cin>>b;
-	} while (b <= a); 
+	Iext = 1.01; 
 	
 	////ofstream (écriture des potentiels et temps de spikes dans fichier "SpikeTable") 
 	ofstream data; 
@@ -70,12 +57,12 @@ int main ()
 			
 		}	
 		
-		
+		++RealTime;  
 		
 		data << "Potential = "<< neuron.getMemb_pot() << " at time : " << RealTime/10<<"ms"<<endl;
 		cout << "Potential = "<< neuron.getMemb_pot() << " at time : " << RealTime/10<<"ms"<<endl;
 		//cout << "Potential = "<< n1.getMemb_pot() << " at time : " << RealTime/10<<"ms"<<endl;
-		++RealTime;  
+		
 	}
 	
 	data << " SPIKES " <<endl;
