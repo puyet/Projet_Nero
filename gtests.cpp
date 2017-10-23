@@ -19,10 +19,11 @@ int main(int argc, char **argv ){
 TEST(NeuronTest, MembranPotential) {
 	
 	Neuron neuron1;
+	
 	neuron1.pot_calcul(1, 1.0, 0);
-	EXPECT_EQ(200*(1-exp(-1/200)), neuron1.getMemb_pot());
+	EXPECT_EQ(200*(1-exp(-1.0/200)), neuron1.getMemb_pot());
   
-	}
+}
 
 
 

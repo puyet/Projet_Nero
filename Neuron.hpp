@@ -14,19 +14,17 @@ class Neuron {
 	private: 
 		
 		
-		double memb_pot_; //the membrane potential (stockage) will aways be reaffected and modify with stat of neuron through methode and formule Vi(t)
-		int localClock_;//local time of own neurone
-		bool isSpiking_; //spikes = true // 
-		//va devoir stocker son nombre de step de simulation (=local clock)   
-		//Network myNetwork; pas de network pour l'instant  
+		double memb_pot_; //!the membrane potential (stockage) will aways be reaffected and modify with stat of neuron through methode and formule Vi(t)
+		int localClock_;//!local time of own neurone
+		bool isSpiking_; //!spikes = true // 
 		bool isRefractory_; // = true if the neuron is refractory 
 		//bool isSpiked_; //condition supplemantaire dans mon update A AJOUTER 
 		
 		vector <double> spikes_;
-		vector <Neuron*> TargetNeighbours_; //tableau de ses voisins  
+		vector <Neuron*> TargetNeighbours_; //tableau de ses voisins  a tej
  
 		vector <double> RingBuffer_; //=> mémoire des J qu'on ajoute a N2  
-		
+		int i; //numéro de neuron "index"
 	public:
 		//constructor & destructor 
 		Neuron(); // pas sure des attributs de la classe
