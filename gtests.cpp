@@ -24,8 +24,16 @@ TEST(NeuronTest, MembranPotential) {
 	EXPECT_EQ(200*(1-exp(-1.0/200)), neuron1.getMemb_pot());
   
 }
-
-
+TEST(NeuronTest, refractory) {
+	
+	Neuron neuron1; 
+	if(neuron1.getisRefractory() == true){
+		
+		EXPECT_EQ(0, neuron1.getMemb_pot()); 
+	}
+	
+	
+}
 
 
 //TEST bla vla 

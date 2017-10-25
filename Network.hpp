@@ -12,26 +12,29 @@ using namespace std;
 class Network {
 	
 	private : 
-		vector <Neuron*> network; // je contient tout mes neurons  
-		Neuron neur; 
+		vector <Neuron*> neurons_; // je contient tout mes neurons de taille N
+		vector<vector<int> > mapConnexion_;
+		int RealTime_= 0;
+		int t_stop=100; 
 		
-		//tableau de tableau de bool  
-		//créer array de taille 15 ou y'a chaque dt apres des qu'il y a spike je stock pour faire le ring modulo %15 (car D = 15 dt) ===> timeClock ie buffer 
-		// je vais avoir besoin de savoir combien de connexion donc maybe vector<bool> NeuronsCharged 
 	public : 
 	
-		Network(); 
+		Network(); //ou N est notre nombre total de neurons  
 		~Network();
-		void addConnexion(Neuron* neur);
-		
-		
-		
-	
-		/*
-	
-	udpade de neurone renvoie un bool 
-	*/
-	
+		//méthode qui renvoit une valeur aléatoire parmis des bornes définies
+		int randomSelection(int a, int b);
+		//generateur de vecteur de neurons (spécifie le types de neurons) 
+		void networkGenerator(); 
+		//remplis le vecteurs de neurons 
+		void addNeurons(Neuron* new_neuron); 
+		//update the network et incéremente le realtime 
+		void simulation(); 
+		//remplis le buffer des J quand neurons spikent et transmet l'info au neurons
+		void update_network(); 
+		//imprime la map connexion pour ettre sure que ca marche 
+		void printMapConnexion();
+		void printNeurons();
+
 	
 	};
 #endif

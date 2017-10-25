@@ -9,6 +9,7 @@ add_executable(run main_Neuron.cpp Neuron.cpp)
 add_executable(runTest1 main_Test1.cpp Neuron.cpp)
 add_executable(neuron_unittest gtests.cpp Neuron.cpp)
 add_executable(runTest2 main_Test2.cpp Neuron.cpp)
+add_executable(NetworkTest Network_Test.cpp Network.cpp Neuron.cpp)
 #add_executable(runTest vec.cpp vec_unittest.cpp)
 
 target_link_libraries(neuron_unittest gtest gtest_main) 
