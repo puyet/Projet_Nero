@@ -23,8 +23,6 @@ class Network {
 		~Network();
 		//méthode qui renvoit une valeur aléatoire parmis des bornes définies
 		int randomSelection(int a, int b);
-		//generateur de vecteur de neurons (spécifie le types de neurons) 
-		void networkGenerator(); 
 		//remplis le vecteurs de neurons 
 		void addNeurons(Neuron* new_neuron); 
 		//update the network et incéremente le realtime 

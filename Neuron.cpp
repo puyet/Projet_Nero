@@ -1,13 +1,12 @@
 #include "Neuron.hpp"
-#include "Cst.hpp"
 #include <cassert>
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <map>
-#include <random>
 #include <cmath>
 #include <vector>
+#include "Cst.hpp"
+#include <random>
 
 using namespace std; 
 //////////////////////////////////////////////////////////////
@@ -99,6 +98,7 @@ void Neuron::addConnexion(Neuron * neur){
 }
 
 //calculate with the distribution of poisson, the random distribution of external spikes	
+
 double Neuron::randomExternalSpikes(){
 	
 //distribution of poisson 
@@ -108,6 +108,7 @@ double Neuron::randomExternalSpikes(){
 	
 	return Poisson(gen); 
 }
+
 
 //////////////////////////////////////////////////
 //											 	//

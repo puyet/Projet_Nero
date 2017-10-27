@@ -24,6 +24,6 @@ double const Ji= 5*J; //J apporté par un neuron inhibitor
 double const g=(Ji/Je); //ration of de 
 int const D = 15; //Delay
 double const R = 200; //r = TAU/C 
-double const Vext=2; //used for the random external spikes (not shure of value) 
+double const Vext=0.02; //used for the random external spikes (not shure of value) 
 
 #endif 
