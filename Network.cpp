@@ -39,16 +39,6 @@ Network::Network ()
 }
 	
 
-/* il faut que tu reflechisses bien a comment est fait ton tableau, si en horizontale tu as le neuron qui recoit ou qui envoit (le neuron
- * vertical sera alors l'autre. 
- * dans une conception ou le horizontal = emetteur, vertical = receveur: lorsque tu cree les connexions de ton
- * neurone, il faut que le neurone tiré au sort soit un neuronne qui SPIKE SUR le neurone que tu considère (i). C'est ce qui est écrit dans
- * l'énoncé, ce qui fait qu'un neurone peut etre un cul de sac et ne spiker sur personne mais recevoir les spike de tous le monde. Je pense
- * que tu n'as pas implémenter ça
- * Ton segfault vient de la ligne 35, i+Ne devient très vite plus grand que N (dès que i vaut Ni)
- * Tu devrais t'en sortir avec tout ça: envoit moi un message et j'accours <3 (je suis planqué en CM)
- * */
-
 Network::~Network(){
 		
 	for (auto& i : neurons_ ){
