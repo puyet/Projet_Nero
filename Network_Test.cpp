@@ -7,14 +7,12 @@ int main ()  {
 
 	
 Network network; 
- 
-cout<<"fuck"<<endl; 
-network.update_network(); 
+  
+	network.simulation(); 
 
-network.printNeurons(); 
+	network.printNeurons(); 
 
-cout<<"fuck2"<<endl; 
-network.printMapConnexion(); 
+	network.printMapConnexion(); 
 
 return 0; 
 

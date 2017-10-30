@@ -20,15 +20,11 @@ Neuron:: Neuron ()
 : memb_pot_(Vr), localClock_(0.0), isRefractory_(false), RingBuffer_(D+1, 0)
 {}
 
-
-
 //////////////////////////////////////////////////////////////
 //															//
 //						Main functions 						//
 //															//
 //////////////////////////////////////////////////////////////
-
-
 
 
 void Neuron:: update_neuron(double Iext){
@@ -41,13 +37,8 @@ void Neuron:: update_neuron(double Iext){
 			spikes_.push_back(localClock_); 		 
 			//clean mem_pot value ; 
 			memb_pot_ = Vr; 
-			 //the neuron will spike 
+			//the neuron will spike 
 			isSpiking_=true;
-			
-			for (size_t i(0); i<TargetNeighbours_.size(); ++i){
-			
-				TargetNeighbours_[i]->setBuffer(localClock_+D, J); 	
-			} 
 			//then the neuron go to the refractory period 
 			isRefractory_=true;
 			 
@@ -91,12 +82,6 @@ void Neuron::setBuffer(int t, double j) {
 	RingBuffer_[i] += j;
 }
 
-
-void Neuron::addConnexion(Neuron * neur){
-	TargetNeighbours_.push_back(neur);
-	
-}
-
 //calculate with the distribution of poisson, the random distribution of external spikes	
 
 double Neuron::randomExternalSpikes(){
@@ -124,7 +109,7 @@ vector <double> Neuron::getSpikes() const {
 
 //get the size of the vector of spikes wich correspund to the number of spikes
 size_t Neuron::getNumbSpikes() const {
-	assert(spikes_.size()!=0);
+	
 	return spikes_.size(); 	
 	
 }
@@ -166,3 +151,10 @@ bool Neuron::getisRefractory() const {
 	
 	return isRefractory_; 
 }
+
+//get the ringBuffer 
+vector <double> Neuron::getRingBuffer() const{
+	
+	return RingBuffer_; 
+}
+		

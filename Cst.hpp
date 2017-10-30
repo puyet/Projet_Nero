@@ -6,7 +6,7 @@
 
 //les unités sont en secondes 
 //int const N = 12500; // number of neurons (will be 12500 ) and Ne = 0.8N Ni = 0.2N
-int const N = 10;
+int const N = 13;
 int const Ne = N*0.8; //Ne est le # de neurons excitator
 int const Ni = N*0.2; //Ni est le # of neuron inibitor 
 int const Ce = Ne/10; // Ce est le # de connexions faites avec des neurons excitator

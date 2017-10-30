@@ -9,8 +9,6 @@
 #include <vector>
 
 
-
-
 using namespace std;
 
 /**
@@ -29,7 +27,7 @@ class Neuron {
 		double memb_pot_; //!the membrane potential (stockage) will aways be reaffected and modify with stat of neuron through methode and formule Vi(t)
 		
 		/**
-		 *@brief local clock of a neuron  
+		 *@brief local clock of a neuron (sychronisated with the realTime of the network) 
 		 */
 		int localClock_;
 		
@@ -39,18 +37,18 @@ class Neuron {
 		*\a false in the other case. 
 		*/
 		bool isSpiking_; //!spikes = true // 
+		
 		/**
 		*@brief Boolean used to determine if the neuron is refractory.
 		* \a true if the neuron is refractory
 		*\a false in the other case. 
 		*/
 		bool isRefractory_;
+		
 		/**
 		 *@brief collection of each time of every spikes done by the neuron 
 		 */
 		vector <double> spikes_;
-		
-		vector <Neuron*> TargetNeighbours_; //tableau de ses voisins  a tej
 		
 		/**
 		 *@brief mémory which evolute with the time of a neuron, store the Amplitudes from the neighbourhs when they spikes the neuron.   
@@ -72,6 +70,8 @@ class Neuron {
 		 */
 		~Neuron() {}; 
 		
+		//--------------------MAIN_METHODS---------------------//
+		
 		
 		/*
 		 * WAIIIIIIT THE END TO EXPLAIN UPDATE CHANGE ALL THE TIME CPP AUSSI
@@ -85,14 +85,6 @@ class Neuron {
 		 * 
 		 */
 		void pot_calcul(double dt, double Iext, double j); 
-		
-		/**
-		 *@brief fill the vector targetNeighbour with a specific neuron wich util now be considered as his neighbour 
-		 * 
-		 * @param Neuron *neur is the neighbour that a neuron will know that he can spike him 
-		 * 
-		 */
-		void addConnexion(Neuron * neur);
 		
 		/**
 		 *@brief set the buffer of a neuron => put the curant J in the buffer at a specific place for a neuron with 
@@ -110,7 +102,7 @@ class Neuron {
 		 */
 		double randomExternalSpikes(); 
 		
-		//--------------getters & setters-------------------
+		//--------------GETTERS_&_SETTERS-------------------//
 		
 		/** 
 		 *@brief give the number of spikes 
@@ -146,13 +138,6 @@ class Neuron {
 		 */
 		vector <double> getSpikes() const; 
 		
-		/**
-		 *@brief give to a neuron the list of his neighbours 
-		 * 
-		 * @return vector <Neuron*> TargetNeighbours : the list of neighbours
-		 * 
-		 */
-		vector <Neuron*> getTargetNeighbours()const; 
 		
 		/**
 		 *@brief give which position of the buffer correspond to a time t
@@ -188,6 +173,13 @@ class Neuron {
 		 */
 		bool getisRefractory() const; 
 		
+		/**
+		 *@brief give the RingBuffer back
+		 * 
+		 * @return vector <double> RingBuffer : the memory of a Buffer
+		 * 
+		 */
+		vector <double> getRingBuffer() const;
 		
 };
 	
