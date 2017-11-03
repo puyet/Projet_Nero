@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 
+
 using namespace std;
 /**
  * @class Network Network.hpp 
@@ -38,13 +39,14 @@ class Network {
 		
 		/**
 		 *@brief time which stop the simulation  
-		 */
-		int t_stop=100;
+		*/
+		 
+		int t_stop=1000;
 		
 		/**
 		 *@brief External current Iext 
 		 */ 
-		double Iext=0.0; 
+		//double Iext=0.0; 
 	
 	public : 
 		
@@ -75,7 +77,7 @@ class Network {
 		 * @return int dis(gen) a random value comprise between a and b  
 		 *
 		 */
-		int randomSelection(int a, int b);
+		int randomSelection(int a, int b, int c);
 		
 		/**
 		 *@brief methods which fill the vector of neurons with neurons 
@@ -100,6 +102,10 @@ class Network {
 		 */
 		void update_network(); 
 		
+		//vector<vector<unsigned int> > getRandomSpikes(int realTime, int tStop) const; 
+		
+		//vector<unsigned int> getCounterSpikes(int realTime, int tStop) const;
+		
 		//---------------DISPLAY_FUNCTIONS---------------//
 		
 		/**
@@ -114,6 +120,10 @@ class Network {
 		 */
 		void printMapConnexion();
 		
+		
+		void printNeuronSpikes(); 
+		
+		void printSpikeTimes(); 
 		//------------------GETTERS-------------------//
 		
 		/** 
@@ -135,5 +145,9 @@ class Network {
 		 * 
 		 */
 		int getMapConnexionPosey(size_t i, size_t j) const; 
+
+		//void addConnexion(int indexNeuron, int sizeVector); 
+		
+		size_t getNumbNeurons() const;
 };
 #endif

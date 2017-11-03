@@ -2,7 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
-//#include "Neuron.hpp"
+#include "Neuron.hpp"
 #include "Cst.hpp"
 #include "Network.hpp"
 
@@ -14,7 +14,10 @@ int main(int argc, char **argv ){
 	return RUN_ALL_TESTS(); 
 		
 }
+//SUCCESS REGULATE BY THE POISSON'S LAW HOW TO FIX IT???????
 //test la valeur du potentiel membranaire 
+
+//Doesn't works at every time because of Poisson repartiton 
 TEST(NeuronTest, MembranPotential) {
 	
 	Neuron neuron1;
@@ -33,6 +36,18 @@ TEST(NeuronTest, refractoryPotClean) {
 	}
 	
 }
+
+
+TEST(NertworkTest, NumberOfNeurons){
+	
+	Network network; 
+	network.simulation(); 	
+	EXPECT_EQ(N, network.getNumbNeurons());
+	
+}
+
+
+
 
 //test le #de spikes apres un certain temps (on sait qu'il y en aura 2 => un a 2.1 et un a 6.3 apres 100 pas ) 
 /*TEST(NeuronTest, NumberOfSpikes){
@@ -57,7 +72,7 @@ TEST(NeuronTest, refractoryPotClean) {
 }
 */
 //test que le neuron 2 avec un Iext de 0 ne spike toujous pas malgres les autres neurons 
-TEST(TwoNeuronTestWithNetwork, NoPSSpike) {
+/*TEST(TwoNeuronTestWithNetwork, NoPSSpike) {
 	
 	Network network; 
 	for(auto i=0; i<100; ++i){
@@ -66,9 +81,9 @@ TEST(TwoNeuronTestWithNetwork, NoPSSpike) {
 	}
 	EXPECT_EQ(0, network.getNeuronsPosey(1).getNumbSpikes());
 }
-
+*/
 //test qui affiche mes connexion entre neurons et vérifie qu'il y a bien le bon #de connexions pour chaque neurone
-TEST(NetworkTest, printConnexionGlobal) {
+/*TEST(NetworkTest, printConnexionGlobal) {
 	
 	Network network; 
 	network.simulation();
@@ -93,7 +108,7 @@ TEST(NetworkTest, excitatoryConnexionNumber) {
 		for(size_t j(0);j<Ne; ++j){
 					
 		}
-	}
-	
+	}	
 }
+*/
 

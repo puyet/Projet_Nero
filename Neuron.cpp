@@ -5,8 +5,9 @@
 #include <string>
 #include <cmath>
 #include <vector>
-#include "Cst.hpp"
+
 #include <random>
+#include <fstream>
 
 using namespace std; 
 //////////////////////////////////////////////////////////////
@@ -20,6 +21,10 @@ Neuron:: Neuron ()
 : memb_pot_(Vr), localClock_(0.0), isRefractory_(false), RingBuffer_(D+1, 0)
 {}
 
+Neuron:: Neuron (TypeNeuron type)
+: memb_pot_(Vr), localClock_(0.0), isRefractory_(false), RingBuffer_(D+1, 0), typeNeuron_(type)
+{}
+
 //////////////////////////////////////////////////////////////
 //															//
 //						Main functions 						//
@@ -27,7 +32,7 @@ Neuron:: Neuron ()
 //////////////////////////////////////////////////////////////
 
 
-void Neuron:: update_neuron(double Iext){
+bool Neuron:: update_neuron(double Iext){
 
 	if (isRefractory_==false) {
 		
@@ -41,13 +46,15 @@ void Neuron:: update_neuron(double Iext){
 			isSpiking_=true;
 			//then the neuron go to the refractory period 
 			isRefractory_=true;
-			 
+			return isRefractory_; 
+			
 		 }else if (spikes_.empty() or memb_pot_< Teta){
 				
 				//the membrane potential evolute in depends of exteral current, spikes from neighbours and external random spikes 
 				pot_calcul(dt, Iext, RingBuffer_[getBufferPosey(localClock_)]);
 				//the neuron doesn't reach the threshorld
-				isSpiking_=false; 		
+				isSpiking_=false; 	
+			
 		}
 	
 	
@@ -58,12 +65,14 @@ void Neuron:: update_neuron(double Iext){
 			isRefractory_ = false; 
 		} 
 		isSpiking_ = false; 
+
 	} 
 	//reset the buffer actual case to make it clean at the end each step
 	RingBuffer_[getBufferPosey(localClock_)]=0;
 	
 	//increment the localClock at each end of the update
 	++localClock_; 
+	return false; 
 }
 
 //calcul the evolution of the mebrame potential 
@@ -72,7 +81,7 @@ void Neuron:: pot_calcul(double dt, double Iext, double j) {
      
      double cst1 = exp(-(dt/Tau));
      double cst2 = (1-cst1)*R; 
-     memb_pot_ = (cst1*memb_pot_) + (cst2*Iext) +j + randomExternalSpikes(); 
+     memb_pot_ = (cst1*memb_pot_) + (cst2*Iext) +j + randomExternalSpikes()*J; 
 }
 
 
@@ -87,13 +96,22 @@ void Neuron::setBuffer(int t, double j) {
 double Neuron::randomExternalSpikes(){
 	
 //distribution of poisson 
-	random_device rd; 
-	mt19937 gen ( rd()); 
-	poisson_distribution <> Poisson(Vext);
+	static random_device rd; 
+	static mt19937 gen ( rd()); 
+	static poisson_distribution <int> Poisson(lambda);
 	
 	return Poisson(gen); 
 }
 
+bool Neuron::isExcitatory(){
+	
+	if(typeNeuron_==E) {
+		return true; 
+		}
+	else{
+		return false; 
+		}
+	}
 
 //////////////////////////////////////////////////
 //											 	//

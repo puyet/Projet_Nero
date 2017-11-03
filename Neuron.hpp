@@ -7,7 +7,7 @@
 #define NEURON_H
 #include <iostream>
 #include <vector>
-
+#include "Cst.hpp"
 
 using namespace std;
 
@@ -54,6 +54,8 @@ class Neuron {
 		 *@brief mémory which evolute with the time of a neuron, store the Amplitudes from the neighbourhs when they spikes the neuron.   
 		 */
 		vector <double> RingBuffer_;
+		
+		TypeNeuron typeNeuron_; 
 
 	public:
 		
@@ -64,6 +66,7 @@ class Neuron {
 		 */ 
 		Neuron();
 		
+		Neuron(TypeNeuron type);
 		/**
 		 * @brief Destructor 
 		 * 
@@ -76,7 +79,7 @@ class Neuron {
 		/*
 		 * WAIIIIIIT THE END TO EXPLAIN UPDATE CHANGE ALL THE TIME CPP AUSSI
 		 */
-		void update_neuron(double Iext); 
+		bool update_neuron(double Iext); 
 		
 		/**
 		 *@brief calcule the potential of the membrane in fuction of the time te currant ext Iext and le currant J and also random external V  
@@ -102,6 +105,7 @@ class Neuron {
 		 */
 		double randomExternalSpikes(); 
 		
+		
 		//--------------GETTERS_&_SETTERS-------------------//
 		
 		/** 
@@ -115,7 +119,7 @@ class Neuron {
 		/**
 		 *@brief give the time t of when a spike happens 
 		 * 
-		 * @param size_t date the size of the vector of spikes 
+		 * @param size_t data the size of the vector of spikes 
 		 * 
 		 * @return the time stocked in the vector spikes_
 		 * 
@@ -180,6 +184,8 @@ class Neuron {
 		 * 
 		 */
 		vector <double> getRingBuffer() const;
+		
+		bool isExcitatory(); 
 		
 };
 	
