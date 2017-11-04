@@ -15,19 +15,20 @@ int const Teta = 20; //seuil of potential
 double const Tau_rp=20; // refractory period (after a spike) 
 double const Tau_E = 2; // ETA
 double const Vr = 0.0; // reset of Vi(t) (after Tau_rp) 
-double const dt = 1; //en 0.1 ms 
+double const dt = 0.1; //en 0.1 ms 
 double const Tau = 20.0; //tau = R*C
 double const C =1; // capacitance 
 double const J=0.1; //amplitude du spike 
 double const Je =J; //J apporté par un neuron excitator 
-double const Ji= -5*J; //J apporté par un neuron inhibitor 
+double const Ji= -0.5*J; //J apporté par un neuron inhibitor 
 double const g=(Ji/Je); //ration of de 
 int const D = 15; //Delay
 double const R = 20.0; //r = TAU/C 
-double const Vext=2.0; //used for the random external spikes (not shure of value) 
+double const Vext=0.2; //used for the random external spikes (not shure of value) //MOI 
 const double h =0.1; 
+const double NuExt =(Tau_E*0.1*0.8*N*J*Tau);
 const double NuThr =(Teta/(0.1*0.8*N*Je*Tau)); 
-const double lambda =(Tau_E*0.1*0.8*N*NuThr); 
+//const double lambda =(NuExt*dt); 
 const double Iext=0.0; 
 
 enum TypeNeuron{E, I};

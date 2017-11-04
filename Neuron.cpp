@@ -18,11 +18,10 @@ using namespace std;
 
 //Default Constructor
 Neuron:: Neuron ()
-: memb_pot_(Vr), localClock_(0.0), isRefractory_(false), RingBuffer_(D+1, 0)
 {}
 
 Neuron:: Neuron (TypeNeuron type)
-: memb_pot_(Vr), localClock_(0.0), isRefractory_(false), RingBuffer_(D+1, 0), typeNeuron_(type)
+: memb_pot_(Vr), localClock_(0), isRefractory_(false), RingBuffer_(D+1, 0), typeNeuron_(type), isSpiking_(false)
 {}
 
 //////////////////////////////////////////////////////////////
@@ -31,30 +30,49 @@ Neuron:: Neuron (TypeNeuron type)
 //															//
 //////////////////////////////////////////////////////////////
 
+void Neuron:: update_neuron(double Iext, double Poisson){
 
-bool Neuron:: update_neuron(double Iext){
-
+	double Jbuffer=0.0; 
+	
 	if (isRefractory_==false) {
 		
 		//the neuron reaches the threshold
-		if(memb_pot_>= Teta) {	 
+		if(memb_pot_> Teta) {	 
 			//store the time of a spike
+			
 			spikes_.push_back(localClock_); 		 
+			//cout<<spikes_.size()<<endl; 
 			//clean mem_pot value ; 
 			memb_pot_ = Vr; 
-			//the neuron will spike 
-			isSpiking_=true;
 			//then the neuron go to the refractory period 
 			isRefractory_=true;
-			return isRefractory_; 
+			//the update of the neuron return the info that the neuron is spiking 
+			//isSpiking_=true; 
+		
+		 }
+		
+		 	//reset the buffer actual case to make it clean at the end each step
+		if(RingBuffer_[getBufferPosey(localClock_)]!=0.0){
 			
-		 }else if (spikes_.empty() or memb_pot_< Teta){
+			Jbuffer = RingBuffer_[getBufferPosey(localClock_)];
+			RingBuffer_[getBufferPosey(localClock_)]=0.0;
+			
+		}
+		 
+		 if (spikes_.empty() or memb_pot_<= Teta){
+			
+			//double lambda_ = Vext*Ce; 
+     
+			//static random_device rd; 
+		//static mt19937 gen ( rd()); 
+		//static poisson_distribution <int> Poisson(lambda_);
+    
+    //double RandomImput = Poisson(gen) *J;
 				
 				//the membrane potential evolute in depends of exteral current, spikes from neighbours and external random spikes 
-				pot_calcul(dt, Iext, RingBuffer_[getBufferPosey(localClock_)]);
-				//the neuron doesn't reach the threshorld
-				isSpiking_=false; 	
-			
+				pot_calcul(dt, Iext, Jbuffer, Poisson);
+				//the neuron doesn't reach the threshorld	
+				//isSpiking_=false;
 		}
 	
 	
@@ -62,40 +80,97 @@ bool Neuron:: update_neuron(double Iext){
 	} else if (isRefractory_== true) {
 		//and it take Tau_rp time for the refractory, its potential membrane doesn't evolute
 		if (localClock_>= (spikes_.back() +Tau_rp) and !spikes_.empty()) {			 
+			 
 			isRefractory_ = false; 
+			//isSpiking_=false;
 		} 
-		isSpiking_ = false; 
-
 	} 
-	//reset the buffer actual case to make it clean at the end each step
-	RingBuffer_[getBufferPosey(localClock_)]=0;
-	
+
 	//increment the localClock at each end of the update
 	++localClock_; 
-	return false; 
+	//the neuron isn't spiking
+	 
 }
+/*
+bool Neuron:: update_neuron(double Iext, double Poisson){
+
+	double Jbuffer=0.0; 
+	
+	if (isRefractory_==false) {
+		
+		//the neuron reaches the threshold
+		if(memb_pot_> Teta) {	 
+			//store the time of a spike
+			cout<<"NIque toi"<<endl; 
+			spikes_.push_back(localClock_); 		 
+			//clean mem_pot value ; 
+			memb_pot_ = Vr; 
+			//then the neuron go to the refractory period 
+			isRefractory_=true;
+			//the update of the neuron return the info that the neuron is spiking 
+			
+			return true; 
+			
+		 }
+		 	//reset the buffer actual case to make it clean at the end each step
+		if(RingBuffer_[getBufferPosey(localClock_)]!=0.0){
+			Jbuffer = RingBuffer_[getBufferPosey(localClock_)];
+			RingBuffer_[getBufferPosey(localClock_)]=0.0;
+			
+		}
+		 
+		 else if (spikes_.empty() or memb_pot_<= Teta){
+			//double lambda_ = Vext*Ce; 
+     
+			//static random_device rd; 
+		//static mt19937 gen ( rd()); 
+		//static poisson_distribution <int> Poisson(lambda_);
+    
+    //double RandomImput = Poisson(gen) *J;
+				
+				//the membrane potential evolute in depends of exteral current, spikes from neighbours and external random spikes 
+				pot_calcul(dt, Iext, Jbuffer, Poisson);
+				//the neuron doesn't reach the threshorld	
+		}
+	
+	
+	//the neuron enter in the refractory time 
+	} else if (isRefractory_== true) {
+		//and it take Tau_rp time for the refractory, its potential membrane doesn't evolute
+		if (localClock_>= (spikes_.back() +Tau_rp) and !spikes_.empty()) {			 
+			cout<<"ok"<<endl; 
+			isRefractory_ = false; 
+		} 
+	} 
+
+	//increment the localClock at each end of the update
+	++localClock_; 
+	//the neuron isn't spiking
+	return false; 
+}*/
 
 //calcul the evolution of the mebrame potential 
-void Neuron:: pot_calcul(double dt, double Iext, double j) {
+void Neuron:: pot_calcul(double dt, double Iext, double j, double Poisson) {
     
-     
-     double cst1 = exp(-(dt/Tau));
-     double cst2 = (1-cst1)*R; 
-     memb_pot_ = (cst1*memb_pot_) + (cst2*Iext) +j + randomExternalSpikes()*J; 
+    double cst1 = exp(-(dt/Tau));
+    double cst2 = (1-cst1)*R; 
+    
+     //the memb_pot depends of dt, Tau, R, Iext(=0.0), j due to the spiking of the others neurons and a random externalCurrent 
+     memb_pot_ = (cst1*memb_pot_) + (cst2*Iext) +j + Poisson*J; 
 }
 
-
-//update of buffer with the J in the right place 
+//update of buffer with the j in the right place 
 void Neuron::setBuffer(int t, double j) {
 	int i = getBufferPosey(t); 
 	RingBuffer_[i] += j;
 }
 
 //calculate with the distribution of poisson, the random distribution of external spikes	
-
-double Neuron::randomExternalSpikes(){
+/*double Neuron::randomExternalSpikes(){
 	
 //distribution of poisson 
+	//double lambda = Vext*Ce;
+	double lambda =2; 
 	static random_device rd; 
 	static mt19937 gen ( rd()); 
 	static poisson_distribution <int> Poisson(lambda);
@@ -103,16 +178,7 @@ double Neuron::randomExternalSpikes(){
 	return Poisson(gen); 
 }
 
-bool Neuron::isExcitatory(){
-	
-	if(typeNeuron_==E) {
-		return true; 
-		}
-	else{
-		return false; 
-		}
-	}
-
+*/
 //////////////////////////////////////////////////
 //											 	//
 //                   GETTERS                  	//
@@ -138,6 +204,7 @@ double Neuron::getMemb_pot() const {
 	return memb_pot_; 
 }
 
+
 //get the time when a neuron spike 
 double Neuron::getTimeForSpike(size_t j) const{
 	
@@ -152,11 +219,6 @@ int Neuron::getBufferPosey(int t) const{
 	return i;
 }
 
-//get the state of the neuron about the spike or not 
-bool Neuron::getisSpiking() const {
-	
-	return isSpiking_; 	
-}
 
 //get the local Clock of the neuron 
 int Neuron::getLocalClock() const {
@@ -176,3 +238,25 @@ vector <double> Neuron::getRingBuffer() const{
 	return RingBuffer_; 
 }
 		
+//return the type of the neuron 
+bool Neuron::isExcitatory(){
+	if(typeNeuron_==E) {
+		return true; 
+	}else{
+		return false; 
+		}
+}
+
+bool Neuron::getIsSpiking(int step)const {
+	
+	if(spikes_.empty()){
+
+		return false; 
+		
+	}
+	if(step==spikes_.back()){
+	
+		return true;
+		}
+	return false; 
+	}

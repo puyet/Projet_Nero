@@ -16,11 +16,7 @@ int main ()  {
 	
 	//if(n.update_neuron(Iext));
 	cout<<"simulation"<<endl; 
-	/*Simulation sim; 
 	
-
-	sim.run(); */
-
 
 	//network.printNeurons(); 
 

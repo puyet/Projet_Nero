@@ -18,65 +18,39 @@ using namespace std;
 Network::Network ()
 :neurons_(), mapConnexion_(N,vector<int>())
 {
-	cout<<"constructor"<<endl; 
-	//table qui affiche les neurons spikeurs (1ere colone) qui affiche les neurons qu'il spike 
-	//1. Fill the vector of neurons (reminder N=12500) 
+	//1. Fill the vector of neurons with the excitatory neurons (reminder Ne=10000) 
 	for(int i(0); i<Ne; ++i){
-		//Neuron neuron; 
-        //addNeurons(neuron);
-        cout<<"neuronavant"<<neurons_.size()<<endl; 
+
         neurons_.push_back(Neuron(E));
-		cout<<"apres"<<neurons_.size()<<endl; 
 	}
-	for(int i(0); i<Ni; ++i) {
+	//2. Fill the vector of neurons with the inhibitor neurons (reminder Ni=2500) 
+	for(int i(Ne); i<N; ++i) {
 		
 		neurons_.push_back(Neuron(I));
-		cout<<"n"<<neurons_.size()<<endl; 
-		}
-		
-	int bla(0); 
-	for(unsigned long int i(0); i<neurons_.size(); ++i){
-		for(unsigned long int E(0); E<Ce; ++E) {
-			
-			static random_device rd;  //Will be used to obtain a seed for the random number engine
-			static mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-			static uniform_int_distribution<> dis(0, (Ne-1)); //calcul the random uniform distribution 
-			//int r = 0;
-			//do {
-				//r = dis(gen);
-			//}while (r == c);
-	  //return r;
-	  
-			mapConnexion_[dis(gen)].push_back(i); 
-			}
-		for (unsigned long int I(0); I<Ci; ++I){
-			
-			static random_device rd;  //Will be used to obtain a seed for the random number engine
-			static mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-			static uniform_int_distribution<> dis(Ne, ((Ne+Ni)-1)); //calcul the random uniform distribution 
-			
-			mapConnexion_[dis(gen)].push_back(i); 	
-		}
-	
-	++ bla; 
-	cout<<bla<<endl; 
 	}
+	//3. Fill the mapConnexion with radom values (uniform distibution)   
+	for(unsigned long int i(0); i<neurons_.size(); ++i){
+		//3.1 for the neurons excitator
+		for(int E(0); E<(Ce+Ci); ++E) {
+			
+			static random_device rd;  //Will be used to obtain a seed for the random number engine
+			static mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+			static uniform_int_distribution<> dis(0, (N-1)); //calcul the random uniform distribution for the exciator neurons 
+			
+			mapConnexion_[i].push_back(dis(gen)); 
+		}
+		//3.1 for the neurons inhibitor
+		/*for (unsigned long int I(0); I<Ci; ++I){
+			
+			static random_device rd;  //Will be used to obtain a seed for the random number engine
+			static mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+			static uniform_int_distribution<> dis(0, (Ni-1)); //calcul the random uniform distribution for the inhibitor neurons
+			
+			mapConnexion_[dis(gen)+Ne].push_back(i);
+			*/ 	
+		}
 	
-	//2. Fill the map of Connexions 
-	/*for(unsigned long int i(0); i<neurons_.size(); ++i) {
-		
-		//Connexions with excitator neurons (random choice) (reminder Ce=Ne/10 and Ne=0.8*N) 
-		for(int E(0); E<Ce; ++E){ 
-			mapConnexion_[i][randomSelection(0,(Ne-1))] +=1; 	
-		}
-		//Connexions with inhibitor neurons (random choice) (reminder Ci=Ni/10 and Ni=0.2*N)
-		for (int I(0); I<Ci; ++I){	
-			mapConnexion_[i][randomSelection(Ne,Ne+Ni-1)] +=1;
-		}
-		* }
-	*/
 }
-
 	
 //Default destructor 
 Network::~Network(){}
@@ -88,90 +62,45 @@ Network::~Network(){}
 //															//
 //////////////////////////////////////////////////////////////
 
-int Network::randomSelection (int a, int b, int c) {
+//updates the network and updates the neurons with Iext=0.0. 
+//=> When a neuron update it gives the info of if the neurons spike or not 
+//=> if a neuron spikes, depends of its type, the buffer of its postsynaptics neighbours will be filled
+//at least calls the printmethode printSpikeTimes which write in the spikesTable.txt
+/*void Network::update_network(){
 	
-	static random_device rd;  //Will be used to obtain a seed for the random number engine
-    static mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
-    static uniform_int_distribution<> dis(a, b); //calcul the random uniform distribution 
-    int r = 0;
-	do {
-		r = dis(gen);
-	}while (r == c);
-	  return r;
-}
-//update the network by fill the buffers of neurons with Jtot and call the update method for the neuron 
-void Network::update_network(){
-	//cout<<"UPDATE"<<endl; 
-	//yolo ca marhce
-	//neurons_[3].update_neuron(Iext); 
-	/*ofstream data; 
-	data.open("spikesTable.txt"); 
-	if (data.fail()) {
-		
-		cout<<"Error opening SpikeTable file"<<endl; 
-	}
-	else {	
-		cout<<"YES"<<endl; 
-		*/
-	//cout<<"networkupdate"<<endl; 
+	//distribution of poisson 
+	//double lambda = Vext*Ce;
+	double lambda =2; 
+	static random_device rd; 
+	static mt19937 gen ( rd()); 
+	static poisson_distribution <int> Poisson(lambda);
+
+	
 	for(size_t j(0); j<neurons_.size(); ++j){
-		//cout<<j<<endl;
-		//Jtot is the storage of the total amplitude J (sum of every connexion and specified for excitator or inhibitor) which will be givent to the neuron spiked
-		//double Jtot(0); 
-		//neurons_[j].update_neuron(Iext);
-		//
-		if(neurons_[j].update_neuron(Iext)){
 		
-		//data<<(neurons_[j].getSpikes()[j]) <<"\t"<<j<<"\n";
-		//for(int E(0); E<Ne; ++E){
-			//if(neurons_[E].getisSpiking()==true){
-				for(size_t i(0); i<mapConnexion_[j].size(); ++i){
+		if(neurons_[j].update_neuron(Iext, Poisson(gen))){
+
+				for(size_t i(0); i<(Ci+Ce); ++i){
 					
 					int Connex(mapConnexion_[j][i]);
-					//cout<<mapConnexion_[j].size()<<endl; 
+					
 					if(neurons_[j].isExcitatory()){
-						//cout<<"spike"<<endl; 
-						neurons_[Connex].setBuffer(neurons_[Connex].getLocalClock()+D, Je);
-						//cout<<"NIQUE"<<endl; 
 						
+						neurons_[Connex].setBuffer(neurons_[Connex].getLocalClock()+D, Je);
 					}
 					else{
 						neurons_[Connex].setBuffer(neurons_[Connex].getLocalClock()+D, Ji);
-						//cout<<neurons_.size()<<endl;
-						}
-						
-				
-				}
-		}
-		
-	}
-	
-	printSpikeTimes(); 
-	
-}			/*neurons_[mapConnexion_[E][i]].setBuffer(neurons_.at(mapConnexion_[E][i]).getLocalClock()+D, Je); 
 					}
-				//neurons_[i].setBuffer(neurons_[i].getLocalClock()+D, Jtot); 
 			}
-				
-		for (int I(Ne); I<N; ++I){
-			
-			//if(neurons_[I].getisSpiking()==true){
-				for(size_t i(0); i<mapConnexion_[I].size(); ++i){
-					neurons_[mapConnexion_[I][i]].setBuffer(neurons_[mapConnexion_[I][i]].getLocalClock()+D, Ji); 
-				}	
-			}/	
 		}
-		//if(neurons_[j].update_neuron(Iext)){}
-		//cout<<"update of "<<j<<endl; 
-		//printNeuronSpikes(); 
-	}
-}
-*/
+	} 
+	//printSpikeTimes(); 
+}*/		
 //method which run the simulation of a network and its neurons évolute with the RealTime	
 void Network::simulation(){
 	 
 	
-	/*cout<<"Preparing the simulation... "<<endl; 
+	cout<<"Preparing the simulation... "<<endl; 
 	cout<<""<<endl; 
 	//print some infos:
 	cout<<"Network number of neurons: "<<neurons_.size()<<endl;
@@ -179,38 +108,58 @@ void Network::simulation(){
 	cout<<"Simulation time: "<<t_stop/10<<" ms"<<endl;
 	cout<<""<<endl; 
 	cout<<"Step time: "<<RealTime_/10<<" ms"<<endl;
-	cout<<""<<endl; */ 
+	cout<<""<<endl; 
 	
-	while (RealTime_< t_stop){
-		//cout<<"simu"<<endl;
-		update_network(); 
-		//printNeuronSpikes(); 
-		++RealTime_; 
+		
+	ofstream data; 
+	data.open("spikesTable.txt"); 
+	if (data.fail()) {
+		
+		cout<<"Error opening SpikeTable file"<<endl; 
 	}
-}
-//add neurons in the collection of neurons 
-void Network::addNeurons(Neuron newNeuron){
-	
-	neurons_.push_back(newNeuron);
+	else {	
+		
+		double lambda =2; 
+		static random_device rd; 
+		static mt19937 gen ( rd()); 
+		static poisson_distribution <int> Poisson(lambda);
+
+		for(long time=0; time<=t_stop; ++time){
+			//distribution of poisson 
+		//double lambda = Vext*Ce;
+		
+		
+		for(size_t j(0); j<neurons_.size(); ++j){
+			
+			neurons_[j].update_neuron(Iext, Poisson(gen)); 
+			
+			if(neurons_[j].getIsSpiking(RealTime_)){
+					
+				if(RealTime_>1000){
+					data<<neurons_[j].getLocalClock()<<'\t'<<j+1<<'\n';
+				}
+					for(size_t i(0); i<(Ci+Ce); ++i){
+						
+						int Connex(mapConnexion_[j][i]);
+						
+						if(neurons_[j].isExcitatory()){
+							
+							neurons_[Connex].setBuffer(neurons_[Connex].getLocalClock()+D, Je);
+						}
+						else{
+							neurons_[Connex].setBuffer(neurons_[Connex].getLocalClock()+D, Ji);
+						}
+				}
+			}
+		} 
+			 
+			RealTime_=time;
+		}
+
+	}
+	data.close(); 
 }
 
-/*vector<vector<unsigned int> > Network::getRandomSpikes(int realTime, int tStop) const{
-	
-	unsigned int size_counter(realTime/tStop); 
-	
-	vector<unsigned int> counter(size_counter); 
-	//Loop for all the neurons
-	for(auto neur: neurons_){
-		
-		//Loop on all the spikes sent by the neuron 
-		
-		}
-	
-	}
-		
-vector<unsigned int> Network::getCounterSpikes(int realTime, int tStop) const{}
-		
-*/
 //////////////////////////////////////////////////////////////
 //															//
 //						Display fuctions	 				//
@@ -248,22 +197,24 @@ void Network::printMapConnexion()
 	cout << endl << endl;
 }
 
+//print the spikes and the potential of the membrane of the neurons and the time of when it happens 
 void Network::printNeuronSpikes(){
-		for (size_t i(0); i<neurons_.size(); ++i) {
-			//cout<<"cia1"<<endl;
-			//cout << "PotentialOf "<<i<<" = "<< neurons_[i].getMemb_pot() << " at time : " << RealTime_<<"ms"<<endl;
 		
-		for(size_t j=0; j< neurons_[i].getNumbSpikes(); j++) {
-			//cout<<"cia"<<endl; 
-			cout<<"spike from N"<<i;
-			cout<<"at "<<neurons_[i].getTimeForSpike(j)/10<<" s"<<endl; 
-			//cout << "Potential = "<< neurons_[i].getMemb_pot() << " at time : " << RealTime_/10<<"ms"<<endl;
-			//cout<<"numberofSpikes"<<neurons_[i].getNumbSpikes()<<endl; 
-			} 
-	}
+		ofstream data1; 
+		data1.open("NeuroPot.txt"); 
+		for (size_t i(0); i<neurons_.size(); ++i) {
+			data1 /*<< "Potential of "<<i<<" = "*/<< neurons_[i].getMemb_pot() <</* " at time : " << RealTime_<<"ms"<<*/ '\t'; /*<< endl;*/
+		
+			/*for(size_t j=0; j< neurons_[i].getNumbSpikes(); j++) {
+				data1<<"spike from N"<<i;
+				data1<<"at "<<neurons_[i].getTimeForSpike(j)/10<<" s"<<endl; 
+			} */
+	} data1 << endl;
+	data1.close();
 }
 
-void Network::printSpikeTimes(){
+//write in a txt files called spikesTable. print the time of when happens the spike and for wich neuron 
+/*void Network::printSpikeTimes(){
 	
 	ofstream data; 
 	data.open("spikesTable.txt"); 
@@ -272,24 +223,19 @@ void Network::printSpikeTimes(){
 		cout<<"Error opening SpikeTable file"<<endl; 
 	}
 	else {	
-		//cout<<"YES"<<endl; 
 		for(int i(0); i<N; ++i){
 			for(size_t j(0); j<neurons_[i].getSpikes().size(); ++j) {
-				//cout<<"FUCK"<<endl; 
-				data<<(neurons_[i].getSpikes()[j])/10 <<"\t"<<i<<"\n";
+				data<<(neurons_[i].getTimeForSpike(j)) <<"\t"<<i+1<<"\n";
 				}
 		}
-	
 	data.close();
 	}
 }
-/*void Network::addConexions (vector<int> index, int random){
-//rempli la ligne par pushback de valeur aléatoires (taille des colones est index) 
-
-	
-	//mapConnexion_[index].push_back(random); 	
-}
 */
+
+
+
+
 //////////////////////////////////////////////////
 //											 	//
 //                   GETTERS                  	//
@@ -307,7 +253,7 @@ int Network::getMapConnexionPosey(size_t i, size_t j) const{
 	
 	return mapConnexion_[i][j];
 }
-
+//get the size of the collection of neurons of the network
 size_t Network::getNumbNeurons() const{
 	
 	return neurons_.size(); 

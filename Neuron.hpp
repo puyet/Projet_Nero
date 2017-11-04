@@ -31,12 +31,6 @@ class Neuron {
 		 */
 		int localClock_;
 		
-		/**@brief Boolean used to determine if a neuron is spiking.
-		* This boolean is set to : 
-		*\a true if a spike was just sent.
-		*\a false in the other case. 
-		*/
-		bool isSpiking_; //!spikes = true // 
 		
 		/**
 		*@brief Boolean used to determine if the neuron is refractory.
@@ -54,9 +48,13 @@ class Neuron {
 		 *@brief mémory which evolute with the time of a neuron, store the Amplitudes from the neighbourhs when they spikes the neuron.   
 		 */
 		vector <double> RingBuffer_;
-		
+		/**
+		 *@brief indicate the type of neurons : Excitator or Inhibitor   
+		 */
 		TypeNeuron typeNeuron_; 
 
+		bool isSpiking_; 
+		
 	public:
 		
 		//-----------CONSTRUCTOR_AND_DESTRUCTOR------------//
@@ -65,7 +63,11 @@ class Neuron {
 		 * 
 		 */ 
 		Neuron();
-		
+		/**
+		 * @brief Constructor
+		 * @param TypeNeuron the type of the neuron (Excitator or Inhibitor) 
+		 *  
+		 */ 
 		Neuron(TypeNeuron type);
 		/**
 		 * @brief Destructor 
@@ -79,7 +81,7 @@ class Neuron {
 		/*
 		 * WAIIIIIIT THE END TO EXPLAIN UPDATE CHANGE ALL THE TIME CPP AUSSI
 		 */
-		bool update_neuron(double Iext); 
+		void update_neuron(double Iext, double Poisson); 
 		
 		/**
 		 *@brief calcule the potential of the membrane in fuction of the time te currant ext Iext and le currant J and also random external V  
@@ -87,7 +89,7 @@ class Neuron {
 		 * @param double dt time double Iext the external current and double j the current J 
 		 * 
 		 */
-		void pot_calcul(double dt, double Iext, double j); 
+		void pot_calcul(double dt, double Iext, double j, double poisson); 
 		
 		/**
 		 *@brief set the buffer of a neuron => put the curant J in the buffer at a specific place for a neuron with 
@@ -153,13 +155,6 @@ class Neuron {
 		 */
 		int getBufferPosey(int t)const;
 		
-		/**
-		 *@brief give the information of the state spiking or not of a Neuron 
-		 * 
-		 * @return bool isSpiking when a neuron spikes isSpiking is true 
-		 * 
-		 */
-		bool getisSpiking() const ;
 		
 		/**
 		 *@brief give the Local clock of the associated neuron  
@@ -180,13 +175,21 @@ class Neuron {
 		/**
 		 *@brief give the RingBuffer back
 		 * 
-		 * @return vector <double> RingBuffer : the memory of a Buffer
+		 *@return vector <double> RingBuffer : the memory of a Buffer
 		 * 
 		 */
 		vector <double> getRingBuffer() const;
 		
+		/**
+		 *@brief give the info about the type of a neuron (Excitator/inhibitor) 
+		 * 
+		 *@return bool : 
+		 *-true if the neuron is excitator 
+		 *-false if the neuron is inhibitor 
+		 */
 		bool isExcitatory(); 
 		
+		bool getIsSpiking(int step)const; 
 };
 	
 	

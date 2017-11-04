@@ -18,7 +18,7 @@ int main(int argc, char **argv ){
 //test la valeur du potentiel membranaire 
 
 //Doesn't works at every time because of Poisson repartiton 
-TEST(NeuronTest, MembranPotential) {
+/*TEST(NeuronTest, MembranPotential) {
 	
 	Neuron neuron1;
 	
@@ -44,9 +44,21 @@ TEST(NertworkTest, NumberOfNeurons){
 	network.simulation(); 	
 	EXPECT_EQ(N, network.getNumbNeurons());
 	
+}*/
+
+TEST(NeuronTest, RefractoryTime){
+	
+	Neuron N(E); 
+
+	for(int i(0); i<20; ++i){
+	
+	N.update_neuron(30, 0);
+	
+	} 
+	EXPECT_EQ(N.getisRefractory(), true);
+	
+	
 }
-
-
 
 
 //test le #de spikes apres un certain temps (on sait qu'il y en aura 2 => un a 2.1 et un a 6.3 apres 100 pas ) 
