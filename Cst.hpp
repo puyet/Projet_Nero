@@ -3,33 +3,49 @@
 
 #include <math.h>
 
+//! external current 
+double const Iext=0.0; 
+//! The number total of nerons 
+int const N = 12500; 
+//! The number of neurons excitator 
+int const Ne = N*0.8; 
+//! The number of neurons inhibior
+int const Ni = N*0.2;
+//! The number of connexions with excitator neurons  
+int const Ce = Ne*0.1;
+//! The number of connexions with inhibitor neurons
+int const Ci = Ni*0.1;
+//! Treshold potential, the potential above wich the neuron will spike 
+int const Teta = 20;
+//! refractory period (after a spike) 
+double const Tau_rp=20;
+//! ETA 
+double const Tau_E = 2;
+//! reset of Vi(t) the membrane potential 
+double const Vr = 0.0;
+//! time per step 
+double const dt = 0.1;
+//! Capacitance 
+double const C =1;
+//! amplitude of a spike
+double const J=0.1;
+//! amplitude of an excitator spike 
+double const Je =J;
+//! //! amplitude of an inhibitor spike
+double const Ji= -0.5*J;
+//! ratio of Ji and Je
+double const g=(Ji/Je);
+//! Delay 
+int const D = 15;
+//! R=TAU/C
+double const R = 20.0; 
+//! Neuron time constant
+double const Tau = R*C;
+//! POISSON LAW: 
+const double NuThr =(Teta/(0.1*0.8*N*Je*Tau));
+const double NuExt =(Tau_E*0.1*0.8*N*NuThr); 
+const double lambda =(NuExt*dt); 
 
-//les unités sont en secondes 
-//int const N = 12500; // number of neurons (will be 12500 ) and Ne = 0.8N Ni = 0.2N
-int const N = 12500;
-int const Ne = N*0.8; //Ne est le # de neurons excitator
-int const Ni = N*0.2; //Ni est le # of neuron inibitor 
-int const Ce = Ne*0.1; // Ce est le # de connexions faites avec des neurons excitator
-int const Ci = Ni*0.1; //Ci est le # de connexions fait avec des neurons inh
-int const Teta = 20; //seuil of potential 
-double const Tau_rp=20; // refractory period (after a spike) 
-double const Tau_E = 2; // ETA
-double const Vr = 0.0; // reset of Vi(t) (after Tau_rp) 
-double const dt = 0.1; //en 0.1 ms 
-double const Tau = 20.0; //tau = R*C
-double const C =1; // capacitance 
-double const J=0.1; //amplitude du spike 
-double const Je =J; //J apporté par un neuron excitator 
-double const Ji= -0.5*J; //J apporté par un neuron inhibitor 
-double const g=(Ji/Je); //ration of de 
-int const D = 15; //Delay
-double const R = 20.0; //r = TAU/C 
-double const Vext=0.2; //used for the random external spikes (not shure of value) //MOI 
-const double h =0.1; 
-const double NuExt =(Tau_E*0.1*0.8*N*J*Tau);
-const double NuThr =(Teta/(0.1*0.8*N*Je*Tau)); 
-//const double lambda =(NuExt*dt); 
-const double Iext=0.0; 
-
+//! Type of neurons (two types : excitator (E), inhibitor(I)
 enum TypeNeuron{E, I};
 #endif 

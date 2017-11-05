@@ -1,0 +1,1 @@
+/usr/bin/c++   -g -Wall -Wextra -pedantic -std=c++11   CMakeFiles/runTest1.dir/main_Test1.cpp.o CMakeFiles/runTest1.dir/Neuron.cpp.o  -o runTest1 -rdynamic 

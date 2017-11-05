@@ -28,10 +28,10 @@ class Network {
 		vector <Neuron> neurons_; 
 		
 		/**
-		 *@brief collection of every connexions between the post/preSynaptic neurons :
-		 * create randomly connexion with the help of the uniform distribution 
-		 * line : neurons index
-		 * column : postsaptic neurons pottentially spiked by the neuron from the line
+		 *@brief collection of every connexions between the post/preSynaptic neurons :.
+		 * create randomly connexion with the help of the uniform distribution .
+		 * line : neurons index.
+		 * column : postsaptic neurons pottentially spiked by the neuron from the line.
 		 */
 		vector<vector<int> > mapConnexion_;
 		
@@ -43,7 +43,7 @@ class Network {
 		/**
 		 *@brief time which stop the simulation  
 		*/ 
-		int t_stop=3000;
+		int t_stop=1000;
 		
 	
 	public : 
@@ -52,11 +52,12 @@ class Network {
 		
 		/**
 		 * @brief constructor
-		 * @details the Network constructor have two task: 
-		 * first: generate a vector of neuron ("neurons_") (it is a collection of every neurons) 
-		 * => use the uniform distribtion to give back random values comprise in the definite boudaries (a low boudary, b high boundary) 
-		 * second: generate a vector of vector of int ("mapConnexion_") to generate the connexion between neurons 
-		 * => by the way, the constructor specify the type of neurons (excitator or inhibitor) when building of vector neurons_
+		 * @details the Network constructor have two task:. 
+		 * first: generate a vector of neuron ("neurons_") (it is a collection of every neurons).
+		 * => by the way, the constructor specify the type of neurons (excitator or inhibitor) when building of vector neurons_.
+		 * 
+		 * second: generate a vector of vector of int ("mapConnexion_") to generate the connexions between neurons .
+		 *=> use the uniform distribtion to give back random values comprise in the definite boudaries (a low boudary, b high boundary). 
 		 */ 
 		Network();
 		
@@ -69,21 +70,16 @@ class Network {
 		//--------------------MAIN_METHODS---------------------//
 		
 		/**
-		 *@brief methods which run the simulation of a network (ie calls the update) every step and increment the realTime 
-		 *
+		 *@brief it is the main methode of the classe Network, runs the simulation and updates the network every step and increment the realTime 
+		 * => genrate the poisson distribution for the unpdate of the neurons. 
+		 * updates the network and updates the neurons with Iext=0. 
+		 *=> When a neuron update it gives the info of if the neurons spike or not. 
+		 *=> if a neuron spikes, depends of its type, the buffer of its postsynaptics neighbours will be filled.
+		 *at least writes in the "spikesTable.txt".
 		 */
 		void simulation(); 
 		
-		/**
-		 *@brief methods which :
-		 *updates the network and updates the neurons with Iext=0.0. 
-		 *=> When a neuron update it gives the info of if the neurons spike or not 
-		 *=> if a neuron spikes, depends of its type, the buffer of its postsynaptics neighbours will be filled
-		 *at least calls the printmethode printSpikeTimes which write in the spikesTable.txt
-		 */
-		void update_network(); 
-		
-		
+	
 		//---------------DISPLAY_FUNCTIONS---------------//
 		
 		/**
@@ -94,28 +90,16 @@ class Network {
 		
 		/**
 		 *@brief print the mapconnexions of the neurons to figurate the randoms connexions
-		 * carefull works well with a number of neurons equal to 13 but not efficent when 12500 neurons
-		 *=> none of the methods calls printMapConnexion (just there to figure out the mapConnexion)
+		 * carefull works well with a number of neurons equal to 30 but not efficent when 12500 neurons.
+		 *=> none of the methods calls printMapConnexion (just there to figure out the mapConnexion).
 		 */
 		void printMapConnexion();
+	
 		
-		/**
-		 *@brief print the spikes and the potential of the membrane of the neurons and the time of when it happens 
-		 * => none of the methods calls printNeuronSpikes (just there to check and see the evolution of the spikes and the coherence of spiking ) 
-		 *
-		 */
-		void printNeuronSpikes(); 
-		
-		
-		/**
-		 *@brief write in a txt files called spikesTable. print the time of when happens the spike and for wich neuron 
-		 *=> the files is used to display in a graph the activity of the neurons 
-		 */
-		void printSpikeTimes(); 
 		//------------------GETTERS-------------------//
 		
 		/** 
-		 *@brief give the acces to a neuron at a specific position in the collection of neurons 
+		 *@brief give the acces to a neuron at a specific position in the collection of neurons (I don't use this methode but could be interessant to have it) 
 		 * 
 		 * @param size__t j => (position - 1) of the neuron of interest 
 		 * 
@@ -127,17 +111,20 @@ class Network {
 		/** 
 		 *@brief give the acces to a connection between a post and a pre synaptic neuron at a specific position in the mapCollection
 		 * 
-		 * @param size_t i the neuron index size_t j the postsynaptic connected to the i neuron  
+		 * @param size_t i the neuron index 
+		 * 
+		 * @param size_t j the postsynaptic connected to the i neuron  
+		 * 
+		 * => not used in the class Network (for the gtest).
 		 * 
 		 * @return neurons_[j] the specific postsynaptic neuron  
-		 * 
-		 * => not used in the class Network (for the gtest) 
+		 *
 		 */
 		int getMapConnexionPosey(size_t i, size_t j) const; 
 
 		/** 
 		 *@brief return the number of neurons from the collection of neurons of Network. (12500) 
-		 * => not used in the class Network (for the gtest) 
+		 * => not used in the class Network (for the gtest).
 		 */
 		size_t getNumbNeurons() const;
 };

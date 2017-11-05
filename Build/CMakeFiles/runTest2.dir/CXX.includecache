@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/student/Desktop/myfiles/BETA/Cst.hpp
+math.h
+-
+
+/home/student/Desktop/myfiles/BETA/Neuron.cpp
+Neuron.hpp
+/home/student/Desktop/myfiles/BETA/Neuron.hpp
+cassert
+-
+iostream
+-
+iomanip
+-
+string
+-
+cmath
+-
+vector
+-
+Cst.hpp
+/home/student/Desktop/myfiles/BETA/Cst.hpp
+random
+-
+
+/home/student/Desktop/myfiles/BETA/Neuron.hpp
+iostream
+-
+vector
+-
+
+/home/student/Desktop/myfiles/BETA/main_Test2.cpp
+iostream
+-
+Neuron.hpp
+/home/student/Desktop/myfiles/BETA/Neuron.hpp
+

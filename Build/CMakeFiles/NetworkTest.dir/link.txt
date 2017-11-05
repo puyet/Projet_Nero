@@ -1,0 +1,1 @@
+/usr/bin/c++   -g -Wall -Wextra -pedantic -std=c++11   CMakeFiles/NetworkTest.dir/Network_Test.cpp.o CMakeFiles/NetworkTest.dir/Network.cpp.o CMakeFiles/NetworkTest.dir/Neuron.cpp.o  -o NetworkTest -rdynamic 

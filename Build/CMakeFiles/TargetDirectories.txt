@@ -1,0 +1,7 @@
+/home/student/Desktop/myfiles/BETA/Build/CMakeFiles/neuron_unittest.dir
+/home/student/Desktop/myfiles/BETA/Build/CMakeFiles/doc.dir
+/home/student/Desktop/myfiles/BETA/Build/gtest/googlemock/gtest/CMakeFiles/gtest.dir
+/home/student/Desktop/myfiles/BETA/Build/gtest/googlemock/CMakeFiles/gmock.dir
+/home/student/Desktop/myfiles/BETA/Build/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir
+/home/student/Desktop/myfiles/BETA/Build/gtest/googlemock/CMakeFiles/gmock_main.dir
+/home/student/Desktop/myfiles/BETA/Build/CMakeFiles/NetworkTest.dir
