@@ -14,7 +14,7 @@ int main(int argc, char **argv ){
 	return RUN_ALL_TESTS(); 
 		
 }
-//Test that the potential of the membran is good calculated 
+//Test that the potential of the membran is good calculated with a Iext =1.0
 TEST(NeuronTest, MembranPotential) {
 	
 	Neuron neuron1;
@@ -46,7 +46,7 @@ TEST(NeuronTest, RefractoryTime){
 	
 	
 }
-//to be sure that a Neuron doesn't spikes with a Iext of 1.0 and no Poisson law
+//to be sure that a Neuron doesn't spikes with a Iext of 1.0 and no Poisson law 
 TEST(NeuronTest, numberOfSpikesForIext1){
 	
 	Neuron N(E); 
@@ -57,7 +57,33 @@ TEST(NeuronTest, numberOfSpikesForIext1){
 		
 		EXPECT_EQ(N.getNumbSpikes(), 0); 		
 	}
+}
+//check that there is suffisantly neurons wich spikes (4 spikes here) with a Iext of 1.01 for 4000 steps
+TEST(NeuronTest, numberOfSpikesForIext101){
+	Neuron N(E); 
+	for (int i(0); i<4000; ++i){
+		N.update_neuron(1.01, 0);	
+	}
+	EXPECT_EQ(N.getNumbSpikes(), 4); 
+}
+
+//check that getIsSpiking works great with no Iext
+TEST(NeuronTest, getIsSpiking){
 	
+	Neuron N(E); 
+	N.update_neuron(0, 0); 
+	int step = 2; 
+	EXPECT_EQ(N.getIsSpiking(step), false);	
+}
+//check that The Je is arriving with a good delay with the help of the buffer 
+TEST(NeuronTest, SetBufferDelay){
+
+	Neuron N(E); 
+	N.setBuffer(D,Je); 
+	for (int i(0); i<16; ++i){
+		N.update_neuron(0,0);  
+	}
+	EXPECT_EQ(N.getMemb_pot(), 0.1); 
 }
 
 //test the number of neurons generated in the networks (should be N=12500)
@@ -66,5 +92,5 @@ TEST(NertworkTest, NumberOfNeurons){
 	Network network; 
 	network.simulation(); 	
 	EXPECT_EQ(N, network.getNumbNeurons());
-
+	
 }
