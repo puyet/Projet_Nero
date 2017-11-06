@@ -1,0 +1,7 @@
+/home/student/Desktop/myfiles/Git/Projet_Neuro/CMakeFiles/neuron_unittest.dir
+/home/student/Desktop/myfiles/Git/Projet_Neuro/CMakeFiles/doc.dir
+/home/student/Desktop/myfiles/Git/Projet_Neuro/gtest/googlemock/gtest/CMakeFiles/gtest.dir
+/home/student/Desktop/myfiles/Git/Projet_Neuro/gtest/googlemock/CMakeFiles/gmock.dir
+/home/student/Desktop/myfiles/Git/Projet_Neuro/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir
+/home/student/Desktop/myfiles/Git/Projet_Neuro/gtest/googlemock/CMakeFiles/gmock_main.dir
+/home/student/Desktop/myfiles/Git/Projet_Neuro/CMakeFiles/NetworkTest.dir
