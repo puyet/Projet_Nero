@@ -183,7 +183,7 @@ bool Neuron::getIsSpiking(int step)const {
 		return false; 	
 	}
 	if(step==spikes_.back()){
-	
+
 		return true;
 	}
 	return false; 

@@ -71,7 +71,7 @@ class Network {
 		
 		/**
 		 *@brief it is the main methode of the classe Network, runs the simulation and updates the network every step and increment the realTime 
-		 * => genrate the poisson distribution for the unpdate of the neurons. 
+		 * => genrate the poisson distribution for the update of the neurons. 
 		 * updates the network and updates the neurons with Iext=0. 
 		 *=> When a neuron update it gives the info of if the neurons spike or not. 
 		 *=> if a neuron spikes, depends of its type, the buffer of its postsynaptics neighbours will be filled.
