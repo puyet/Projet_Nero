@@ -38,8 +38,11 @@ To draw the graphs, I used Jupyter and comands given on moodle (=> just change 2
 -SpikesTable4.txt : version d of the output graphs generated with jupyter
 
 #How to compile the program: 
-1. make
-2. use the command ./neuron_unittest in the terminal to se the results of the gtest 
-3. use the command ./NetworkTest in the terminal to run the simualtion of a network and its neurons. 
+1. clear the file Build  
+2. create a new file called build 
+3. go in this file and write in the terminal cmake ..
+4. write make 
+5. use the command ./neuron_unittest in the terminal to se the results of the gtest 
+6. use the command ./NetworkTest in the terminal to run the simualtion of a network and its neurons. 
 
 Laura Puyet SV BAIII Projet_Neuro EPFL 2017 
